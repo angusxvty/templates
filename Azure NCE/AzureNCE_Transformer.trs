@@ -108,6 +108,7 @@ uppercase values in columns partnerId customerId subscriptionId meterId entitlem
 rename column meterId to service_id
 rename column quantity to service_quantity
 rename column effectiveUnitPrice to service_cogs
+rename column unitPrice to service_rate
 rename column unitType to service_unit
 # Create missing columns to assist in the completion of the dataset
 create column service_charge_model value peak
@@ -139,6 +140,12 @@ if (!@DSET_EMPTY(AzureNCE.OneTime)) {
 } else {
     rename dset AzureNCE.MarketPlace to AzureNCE.Result
 }
+
+if (@DSET_EMPTY(AzureNCE.Result)) {
+    # DSET is empty
+    terminate
+}
+
 finish AzureNCE.Result
 
 # Setup service catalog mapping
